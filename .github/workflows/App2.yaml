@@ -1,4 +1,4 @@
-name: Build rclone for Alpine (386, softfloat)
+name: app2 Build rclone for Alpine (386, softfloat)
 
 on:
   workflow_dispatch:
