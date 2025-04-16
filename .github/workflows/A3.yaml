@@ -22,7 +22,7 @@ jobs:
           export CGO_ENABLED=0
           export GOMAXPROCS=1
           export GOGC=off
-          export GOPROXY=direct
+          export GOPROXY=https://proxy.golang.org
           git clone https://github.com/rclone/rclone.git
           cd rclone
           go build -ldflags="-s -w" -o ../build/rclone .
