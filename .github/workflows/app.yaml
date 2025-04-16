@@ -1,0 +1,39 @@
+name: Build rclone for Alpine (386, softfloat)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build rclone binary
+    steps:
+      - name: Checkout (dummy step to make workspace)
+        run: mkdir src && cd src
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Build rclone (linux/386 softfloat)
+        run: |
+          mkdir -p ~/go/bin
+          export GOOS=linux
+          export GOARCH=386
+          export GO386=softfloat
+          export CGO_ENABLED=0
+          export GOMAXPROCS=1
+          export GOGC=off
+          export GOPROXY=direct
+          go install -ldflags="-s -w" github.com/rclone/rclone@latest
+          mkdir -p build
+          cp ~/go/bin/rclone build/rclone
+          file build/rclone
+          ls -lh build/rclone
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rclone-linux-386-softfloat
+          path: build/rclone
